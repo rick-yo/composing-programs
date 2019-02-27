@@ -21,7 +21,16 @@ def roll_dice(num_rolls, dice=six_sided):
     # These assert statements ensure that num_rolls is a positive integer.
     assert type(num_rolls) == int, 'num_rolls must be an integer.'
     assert num_rolls > 0, 'Must roll at least once.'
-    "*** YOUR CODE HERE ***"
+    cur, sum = 0, 0
+
+    while(cur < num_rolls):
+        cur_dice = dice()
+        cur += 1
+        if (cur_dice == 1):
+            return 1
+        else:
+            sum += cur_dice
+    return sum
 
 
 def take_turn(num_rolls, opponent_score, dice=six_sided):
@@ -39,6 +48,7 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
 
 # Playing a game
 
+
 def select_dice(score, opponent_score):
     """Select six-sided dice unless the sum of SCORE and OPPONENT_SCORE is a
     multiple of 7, in which case select four-sided dice (Hog wild).
@@ -52,6 +62,7 @@ def select_dice(score, opponent_score):
     """
     "*** YOUR CODE HERE ***"
 
+
 def other(who):
     """Return the other player, for a player WHO numbered 0 or 1.
 
@@ -61,6 +72,7 @@ def other(who):
     0
     """
     return 1 - who
+
 
 def play(strategy0, strategy1, goal=GOAL_SCORE):
     """Simulate a game and return the final scores of both players, with
@@ -84,8 +96,10 @@ def play(strategy0, strategy1, goal=GOAL_SCORE):
 
 # Basic Strategy
 
+
 BASELINE_NUM_ROLLS = 5
 BACON_MARGIN = 8
+
 
 def always_roll(n):
     """Return a strategy that always rolls N dice.
@@ -106,6 +120,7 @@ def always_roll(n):
 
 # Experiments
 
+
 def make_averaged(fn, num_samples=1000):
     """Return a function that returns the average_value of FN when called.
 
@@ -125,6 +140,7 @@ def make_averaged(fn, num_samples=1000):
     Thus, the average value is 6.0.
     """
     "*** YOUR CODE HERE ***"
+
 
 def max_scoring_num_rolls(dice=six_sided):
     """Return the number of dice (1 to 10) that gives the highest average turn
@@ -147,6 +163,7 @@ def max_scoring_num_rolls(dice=six_sided):
     """
     "*** YOUR CODE HERE ***"
 
+
 def winner(strategy0, strategy1):
     """Return 0 if strategy0 wins against strategy1, and 1 otherwise."""
     score0, score1 = play(strategy0, strategy1)
@@ -155,35 +172,38 @@ def winner(strategy0, strategy1):
     else:
         return 1
 
+
 def average_win_rate(strategy, baseline=always_roll(BASELINE_NUM_ROLLS)):
     """Return the average win rate (0 to 1) of STRATEGY against BASELINE."""
     win_rate_as_player_0 = 1 - make_averaged(winner)(strategy, baseline)
     win_rate_as_player_1 = make_averaged(winner)(baseline, strategy)
-    return (win_rate_as_player_0 + win_rate_as_player_1) / 2 # Average results
+    return (win_rate_as_player_0 + win_rate_as_player_1) / 2  # Average results
+
 
 def run_experiments():
     """Run a series of strategy experiments and report results."""
-    if True: # Change to False when done finding max_scoring_num_rolls
+    if True:  # Change to False when done finding max_scoring_num_rolls
         six_sided_max = max_scoring_num_rolls(six_sided)
         print('Max scoring num rolls for six-sided dice:', six_sided_max)
         four_sided_max = max_scoring_num_rolls(four_sided)
         print('Max scoring num rolls for four-sided dice:', four_sided_max)
 
-    if False: # Change to True to test always_roll(8)
+    if False:  # Change to True to test always_roll(8)
         print('always_roll(8) win rate:', average_win_rate(always_roll(8)))
 
-    if False: # Change to True to test bacon_strategy
+    if False:  # Change to True to test bacon_strategy
         print('bacon_strategy win rate:', average_win_rate(bacon_strategy))
 
-    if False: # Change to True to test swap_strategy
+    if False:  # Change to True to test swap_strategy
         print('swap_strategy win rate:', average_win_rate(swap_strategy))
 
-    if False: # Change to True to test final_strategy
+    if False:  # Change to True to test final_strategy
         print('final_strategy win rate:', average_win_rate(final_strategy))
 
     "*** You may add additional experiments as you wish ***"
 
 # Strategies
+
 
 def bacon_strategy(score, opponent_score):
     """This strategy rolls 0 dice if that gives at least BACON_MARGIN points,
@@ -197,7 +217,8 @@ def bacon_strategy(score, opponent_score):
     0
     """
     "*** YOUR CODE HERE ***"
-    return 5 # Replace this statement
+    return 5  # Replace this statement
+
 
 def swap_strategy(score, opponent_score):
     """This strategy rolls 0 dice when it would result in a beneficial swap and
@@ -215,7 +236,8 @@ def swap_strategy(score, opponent_score):
     5
     """
     "*** YOUR CODE HERE ***"
-    return 5 # Replace this statement
+    return 5  # Replace this statement
+
 
 def final_strategy(score, opponent_score):
     """Write a brief description of your final strategy.
@@ -223,7 +245,7 @@ def final_strategy(score, opponent_score):
     *** YOUR DESCRIPTION HERE ***
     """
     "*** YOUR CODE HERE ***"
-    return 5 # Replace this statement
+    return 5  # Replace this statement
 
 
 ##########################
@@ -241,13 +263,16 @@ def get_int(prompt, min):
         choice = input(prompt)
     return int(choice)
 
+
 def interactive_dice():
     """A dice where the outcomes are provided by the user."""
     return get_int('Result of dice roll: ', 1)
 
+
 def make_interactive_strategy(player):
     """Return a strategy for which the user provides the number of rolls."""
     prompt = 'Number of rolls for Player {0}: '.format(player)
+
     def interactive_strategy(score, opp_score):
         if player == 1:
             score, opp_score = opp_score, score
@@ -256,11 +281,13 @@ def make_interactive_strategy(player):
         return choice
     return interactive_strategy
 
+
 def roll_dice_interactive():
     """Interactively call roll_dice."""
     num_rolls = get_int('Number of rolls: ', 1)
     turn_total = roll_dice(num_rolls, interactive_dice)
     print('Turn total:', turn_total)
+
 
 def take_turn_interactive():
     """Interactively call take_turn."""
@@ -269,12 +296,14 @@ def take_turn_interactive():
     turn_total = take_turn(num_rolls, opp_score, interactive_dice)
     print('Turn total:', turn_total)
 
+
 def play_interactive():
     """Interactively call play."""
     strategy0 = make_interactive_strategy(0)
     strategy1 = make_interactive_strategy(1)
     score0, score1 = play(strategy0, strategy1)
     print('Final scores:', score0, 'to', score1)
+
 
 @main
 def run(*args):
