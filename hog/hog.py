@@ -3,13 +3,14 @@
 from dice import four_sided, six_sided, make_test_dice
 from ucb import main, trace, log_current_line, interact
 
-GOAL_SCORE = 100 # The goal of Hog is to score 100 points.
+GOAL_SCORE = 100  # The goal of Hog is to score 100 points.
 
 ######################
 # Phase 1: Simulator #
 ######################
 
 # Taking turns
+
 
 def roll_dice(num_rolls, dice=six_sided):
     """Roll DICE for NUM_ROLLS times.  Return either the sum of the outcomes,
@@ -22,14 +23,17 @@ def roll_dice(num_rolls, dice=six_sided):
     assert type(num_rolls) == int, 'num_rolls must be an integer.'
     assert num_rolls > 0, 'Must roll at least once.'
     cur, sum = 0, 0
+    is_pig_out = False
 
     while(cur < num_rolls):
         cur_dice = dice()
         cur += 1
         if (cur_dice == 1):
-            return 1
+            is_pig_out = True
         else:
             sum += cur_dice
+    if(is_pig_out):
+        return 1
     return sum
 
 
