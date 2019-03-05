@@ -37,6 +37,20 @@ def roll_dice(num_rolls, dice=six_sided):
     return sum
 
 
+def lagest_digit(num):
+    if (num < 10): return num
+    arr = []
+    while(num >= 10):
+        arr.append(num % 10)
+        num = num // 10
+        if (num < 10):
+            arr.append(num)
+    return max(*arr)
+
+
+print(lagest_digit(71))
+
+
 def take_turn(num_rolls, opponent_score, dice=six_sided):
     """Simulate a turn rolling NUM_ROLLS dice, which may be 0 (Free bacon).
 
@@ -48,7 +62,10 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
     assert num_rolls >= 0, 'Cannot roll a negative number of dice.'
     assert num_rolls <= 10, 'Cannot roll more than 10 dice.'
     assert opponent_score < 100, 'The game should be over.'
-    "*** YOUR CODE HERE ***"
+    if(num_rolls == 0):
+        return lagest_digit(opponent_score) + 1
+    else:
+        return roll_dice(num_rolls, dice)
 
 # Playing a game
 
