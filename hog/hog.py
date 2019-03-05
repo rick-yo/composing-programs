@@ -38,7 +38,8 @@ def roll_dice(num_rolls, dice=six_sided):
 
 
 def lagest_digit(num):
-    if (num < 10): return num
+    if (num < 10):
+        return num
     arr = []
     while(num >= 10):
         arr.append(num % 10)
@@ -81,7 +82,10 @@ def select_dice(score, opponent_score):
     >>> select_dice(0, 0) == four_sided
     True
     """
-    "*** YOUR CODE HERE ***"
+    if((score+opponent_score) % 7 == 0):
+        return four_sided
+    else:
+        return six_sided
 
 
 def other(who):
