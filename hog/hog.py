@@ -99,9 +99,6 @@ def silence(score0, score1):
     """Announce nothing (see Phase 2)."""
     return silence
 
-def swap(a, b):
-    a,b = b,a
-
 def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
          goal=GOAL_SCORE, say=silence):
     """Simulate a game and return the final scores of both players, with Player
@@ -276,7 +273,14 @@ def make_averaged(fn, num_samples=1000):
     3.0
     """
     # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
+    def average(*args):
+        sum = 0
+        index = 0
+        while(index < num_samples):
+            sum+=fn(*args)
+            index+=1
+        return sum/num_samples
+    return average
     # END PROBLEM 8
 
 
