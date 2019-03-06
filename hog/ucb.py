@@ -1,5 +1,7 @@
 """The UCB module contains functions specific to 61A projects at UC Berkeley."""
 
+from __future__ import print_function
+
 import code
 import functools
 import inspect
@@ -55,9 +57,7 @@ def trace(fn):
 
 def log(message):
     """Print an indented message (used with trace)."""
-    if type(message) is not str:
-        message = str(message)
-    print(_PREFIX + re.sub('\n', '\n' + _PREFIX, message))
+    print(_PREFIX + re.sub('\n', '\n' + _PREFIX, str(message)))
 
 
 def log_current_line():
@@ -72,16 +72,11 @@ def interact(msg=None):
     On Unix:
       <Control>-D exits the interactive session and returns to normal execution.
     In Windows:
-      <Control>-Z <Enter> exists the interactive session and returns to normal
+      <Control>-Z <Enter> exits the interactive session and returns to normal
       execution.
     """
-    # use exception trick to pick up the current frame
-    try:
-        raise None
-    except:
-        frame = sys.exc_info()[2].tb_frame.f_back
-
     # evaluate commands in current namespace
+    frame = inspect.currentframe().f_back
     namespace = frame.f_globals.copy()
     namespace.update(frame.f_locals)
 
