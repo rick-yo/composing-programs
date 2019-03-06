@@ -44,8 +44,7 @@ def free_bacon(score):
     """
     assert score < 100, 'The game should be over.'
     # BEGIN PROBLEM 2
-    if (score < 10): return 1
-    ones_digit, tens_digit = score%10, score//10
+    ones_digit, tens_digit = score % 10, score//10
     return min(ones_digit, tens_digit) + 1
     # END PROBLEM 2
 
@@ -100,6 +99,8 @@ def silence(score0, score1):
     """Announce nothing (see Phase 2)."""
     return silence
 
+def swap(a, b):
+    a,b = b,a
 
 def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
          goal=GOAL_SCORE, say=silence):
@@ -120,7 +121,17 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     """
     player = 0  # Which player is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
-    num_rolls0 = strategy0()
+    while(score0 < goal and score1 < goal):
+        num_rolls0 = strategy0(score0, score1)
+        num_rolls1 = strategy1(score1, score0)
+        if(player == 0):
+            score0 += take_turn(num_rolls0, score1, dice)
+        else:
+            score1 += take_turn(num_rolls1, score0, dice)
+        if (is_swap(score0, score1)): 
+            score0, score1 = score1, score0
+        player = other(player)
+    return score0, score1
     # END PROBLEM 5
     # (note that the indentation for the problem 6 prompt (***YOUR CODE HERE***) might be misleading)
     # BEGIN PROBLEM 6
@@ -138,6 +149,7 @@ def say_scores(score0, score1):
     """A commentary function that announces the score for each player."""
     print("Player 0 now has", score0, "and Player 1 now has", score1)
     return say_scores
+
 
 def announce_lead_changes(previous_leader=None):
     """Return a commentary function that announces lead changes.
@@ -163,6 +175,7 @@ def announce_lead_changes(previous_leader=None):
             print('Player', leader, 'takes the lead by', abs(score0 - score1))
         return announce_lead_changes(leader)
     return say
+
 
 def both(f, g):
     """Return a commentary function that says what f says, then what g says.
