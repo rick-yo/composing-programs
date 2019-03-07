@@ -377,12 +377,17 @@ def swap_strategy(score, opponent_score, margin=8, num_rolls=4):
 
 
 def final_strategy(score, opponent_score):
-    """Write a brief description of your final strategy.
-
-    *** YOUR DESCRIPTION HERE ***
+    """This strategy is a combine strategy of these:
+    1. swap strategy
+    2. free bacon
+    it will evaluate the above strategys in order.
     """
     # BEGIN PROBLEM 12
-    return 4  # Replace this statement
+    bacon_score = free_bacon(opponent_score)
+    score_with_bacon = bacon_score + score
+    if (is_swap(score_with_bacon, opponent_score) and opponent_score > score_with_bacon):
+        return 0
+    return bacon_strategy(score, opponent_score, 4, 2)
     # END PROBLEM 12
 
 
