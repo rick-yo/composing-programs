@@ -294,7 +294,17 @@ def max_scoring_num_rolls(dice=six_sided, num_samples=1000):
     1
     """
     # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
+    min_num_rolls = 1
+    max_scores = 0
+    index: int = 1
+    while(index<= 10):
+        average_roll_dice = make_averaged(roll_dice, num_samples)
+        average_score = average_roll_dice(index, dice)
+        if (average_score > max_scores):
+            min_num_rolls = index
+            max_scores = average_score
+        index+=1
+    return min_num_rolls
     # END PROBLEM 9
 
 
