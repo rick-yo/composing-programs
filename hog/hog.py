@@ -353,7 +353,10 @@ def bacon_strategy(score, opponent_score, margin=8, num_rolls=4):
     rolls NUM_ROLLS otherwise.
     """
     # BEGIN PROBLEM 10
-    return 4  # Replace this statement
+    bacon_score = free_bacon(opponent_score)
+    if(bacon_score >= margin):
+        return 0
+    return num_rolls  # Replace this statement
     # END PROBLEM 10
 
 
