@@ -142,7 +142,13 @@ def rate_all(user, restaurants, feature_fns):
     predictor = best_predictor(user, ALL_RESTAURANTS, feature_fns)
     reviewed = user_reviewed_restaurants(user, restaurants)
     # BEGIN Question 9
-    "*** YOUR CODE HERE ***"
+    rating_dict = {}
+    for r in restaurants:
+        if (r in reviewed):
+            rating_dict[restaurant_name(r)] = user_rating(user, restaurant_name(r))
+        else:
+            rating_dict[restaurant_name(r)] = predictor(r)
+    return rating_dict
     # END Question 9
 
 
