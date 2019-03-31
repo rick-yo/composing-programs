@@ -416,12 +416,17 @@ class TankAnt(BodyguardAnt):
     damage = 1
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 10
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    is_container = True
+    food_cost = 6
     # END Problem 10
-
     def action(self, colony):
         # BEGIN Problem 10
-        "*** YOUR CODE HERE ***"
+        BodyguardAnt.action(self, colony)
+        bees = self.place.bees
+        for bee in list(bees):
+            bee.reduce_armor(self.damage)
+        self.place.bees = bees
         # END Problem 10
 
 class Water(Place):
