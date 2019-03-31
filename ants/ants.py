@@ -307,23 +307,30 @@ class HungryAnt(Ant):
     name = 'Hungry'
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 6
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    food_cost = 4
+    time_to_digest = 3
+    digesting = 0
     # END Problem 6
 
     def __init__(self, armor=1):
         # BEGIN Problem 6
-        "*** YOUR CODE HERE ***"
+        Ant.__init__(self, armor)
         # END Problem 6
 
     def eat_bee(self, bee):
         # BEGIN Problem 6
-        "*** YOUR CODE HERE ***"
+        bee.reduce_armor(bee.armor)
+        self.digesting = self.time_to_digest
         # END Problem 6
 
     def action(self, colony):
-        # BEGIN Problem 6
-        "*** YOUR CODE HERE ***"
-        # END Problem 6
+        if (self.digesting <= 0):
+            bee = random_or_none(self.place.bees)
+            if (bee is not None):
+                self.eat_bee(bee)
+        else:
+            self.digesting -= 1
 
 class NinjaAnt(Ant):
     """NinjaAnt does not block the path and damages all bees in its place."""
