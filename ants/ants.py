@@ -63,6 +63,8 @@ class Place(object):
 
         A Bee is just removed from the list of Bees.
         """
+        if (isinstance(insect, QueenAnt) and not insect.is_fake):
+            return
         if insect.is_ant:
             # Special handling for QueenAnt
             # BEGIN Problem 13
@@ -455,19 +457,26 @@ class ScubaThrower(ThrowerAnt):
 # END Problem 12
 
 # BEGIN Problem 13
-class QueenAnt(Ant):  # You should change this line
+class QueenAnt(ScubaThrower):  # You should change this line
 # END Problem 13
     """The Queen of the colony. The game is over if a bee enters her place."""
 
     name = 'Queen'
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 13
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    is_instantiated = False
+    food_cost = 7
     # END Problem 13
 
     def __init__(self, armor=1):
         # BEGIN Problem 13
-        "*** YOUR CODE HERE ***"
+        ThrowerAnt.__init__(self, armor)
+        if (QueenAnt.is_instantiated):
+            self.is_fake = True
+        else:
+            self.is_fake = False
+            QueenAnt.is_instantiated = True
         # END Problem 13
 
     def action(self, colony):
@@ -477,15 +486,40 @@ class QueenAnt(Ant):  # You should change this line
         Impostor queens do only one thing: reduce their own armor to 0.
         """
         # BEGIN Problem 13
-        "*** YOUR CODE HERE ***"
+        if (self.is_fake):
+            self.reduce_armor(self.armor)
+            return
+        ScubaThrower.action(self, colony)
+        self.__double_damage__()
         # END Problem 13
 
+    def __double_damage__(self):
+        current_place = self.place.exit
+        while(current_place):
+            ant = current_place.ant
+            if (ant is not None):
+                if (not self.__is_doubled__(ant)):
+                    ant.doubled = True
+                    ant.damage *= 2
+                if (ant.is_container and ant.contained_ant is not None):
+                    if (not self.__is_doubled__(ant.contained_ant)):
+                        ant.contained_ant.damage *= 2
+                        ant.contained_ant.doubled = True
+            current_place = current_place.exit
+    def __is_doubled__(self, ant):
+        if (hasattr(ant, 'doubled') and ant.doubled):
+            return True
+        return False
     def reduce_armor(self, amount):
         """Reduce armor by AMOUNT, and if the True QueenAnt has no armor
         remaining, signal the end of the game.
         """
         # BEGIN Problem 13
-        "*** YOUR CODE HERE ***"
+        Insect.reduce_armor(self, amount)
+        if (self.is_fake):
+            return
+        if self.armor <= 0:
+            bees_win()
         # END Problem 13
 
 class AntRemover(Ant):
